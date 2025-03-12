@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License
  */
-import { store } from '../config.js';
+// import { store } from '../config.js';
 
 /**
  * User data schema
@@ -25,8 +25,16 @@ import { store } from '../config.js';
  * }
  **/
 
+const credentials = new Map();
+const users = new Map();
+
 export const Users = {
   findById: async (user_id) => {
+    const user = users.get(user_id);
+    if (user) {
+      return user;
+    }
+    /*
     const doc = await store.collection('users').doc(user_id).get();
     if (doc) {
       const credential = doc.data();
@@ -34,9 +42,19 @@ export const Users = {
     } else {
       return;
     }
+    */
   },
 
   findByUsername: async (username) => {
+    const results = [];
+    users.forEach((user) => {
+      if (user.username == username) {
+        results.push(user);
+      }
+    });
+    return results.length > 0 ? results[0] : undefined;
+
+    /*
     const results = [];
     const refs = await store.collection('users')
       .where('username', '==', username).get();
@@ -44,11 +62,16 @@ export const Users = {
       refs.forEach(user => results.push(user.data()));
     }
     return results.length > 0 ? results[0] : undefined;
+    */
   },
 
   update: async (user) => {
+    users.set(user.id, user);
+    
+    /*
     const ref = store.collection('users').doc(user.id);
-      return ref.set(user);
+    return ref.set(user);
+    */
   }
 }
 
@@ -67,6 +90,11 @@ export const Users = {
 
 export const Credentials = {
   findById: async (credential_id) => {
+    const credential = credentials.get(credential_id);
+    if (credential) {
+      return credential;
+    }
+    /*
     const doc = await store.collection('credentials').doc(credential_id).get();
     if (doc) {
       const credential = doc.data();
@@ -74,24 +102,41 @@ export const Credentials = {
     } else {
       return;
     }
+    */
   },
 
   findByUserId: async (user_id) => {
+    const results = [];
+    credentials.forEach((credential) => {
+      if (credential.user_id === user_id) {
+        results.push(credential);
+      }
+    });
+    return results;
+    /*
     const results = [];
     const refs = await store.collection('credentials')
       .where('user_id', '==', user_id)
       .orderBy('registered', 'desc').get();
     refs.forEach(cred => results.push(cred.data()));
     return results;
+    */
   },
 
   update: async (credential) => {
+    credentials.set(credential.id, credential);
+
+    /*
     const ref = store.collection('credentials').doc(credential.id);
     return ref.set(credential);
+    */
   },
   
-  remove: async (credential_id, user_id) => {
+  remove: async (credential_id) => {
+    credentials.delete(credential.id);
+    /*
     const ref = store.collection('credentials').doc(credential_id);
     return ref.delete();
+    */
   }
 }

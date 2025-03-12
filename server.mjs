@@ -24,9 +24,14 @@ import session from 'express-session';
 import hbs from 'express-handlebars';
 const app = express();
 import useragent from 'express-useragent';
-import { FirestoreStore } from '@google-cloud/connect-firestore';
-import { config, store } from './config.js';
+// import { FirestoreStore } from '@google-cloud/connect-firestore';
+import memorystore from 'memorystore';
+// import { config, store } from './config.js';
+import { config } from './config.js';
 import { auth } from './libs/auth.mjs';
+
+
+const MemoryStore = memorystore(session);
 
 const is_localhost = process.env.NODE_ENV === 'localhost';
 const title = config.rp_name;
@@ -50,15 +55,21 @@ app.use(session({
   resave: true,
   saveUninitialized: false,
   proxy: true,
+  /*
   store: new FirestoreStore({
     dataset: store,
     kind: 'express-sessions',
+  }),
+  */
+  store: new MemoryStore({
+    checkPeriod: 86400000 // prune expired entries every 24h
   }),
   cookie:{
     path: '/',
     httpOnly: true,
     secure: !is_localhost,
-    maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+    // maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+    maxAge:  86400000 // prune expired entries every 24h
   }
 }));
 

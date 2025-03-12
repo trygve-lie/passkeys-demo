@@ -1,6 +1,8 @@
+/*
 import firebaseJson  from './firebase.json' with { type: 'json' };
 import { getFirestore } from 'firebase-admin/firestore';
 import { initializeApp } from 'firebase-admin/app';
+*/
 
 const is_localhost = process.env.NODE_ENV === 'localhost';
 const env = is_localhost ? 'development' : 'production';
@@ -53,6 +55,7 @@ const config = {
   ]
 };
 
+/*
 function initializeFirestore() {
   if (is_localhost) {
     process.env.GOOGLE_CLOUD_PROJECT = config.project_name;
@@ -69,3 +72,6 @@ function initializeFirestore() {
 const store = initializeFirestore();
 
 export { config, store };
+*/
+
+export { config };
