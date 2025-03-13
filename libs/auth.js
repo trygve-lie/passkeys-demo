@@ -24,7 +24,7 @@ import {
   verifyAuthenticationResponse
 } from '@simplewebauthn/server';
 import { isoBase64URL } from '@simplewebauthn/server/helpers';
-import { Users, Credentials } from './db.mjs';
+import { Users, Credentials } from './db.js';
 import aaguids from 'aaguid' with { type: 'json' };
 import { config } from '../config.js';
 
