@@ -14,12 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License
  */
+import CopyPlugin from 'copy-webpack-plugin';
 import * as sass from 'sass';
 
 export default {
   entry: {
-    'components-bundle': './public/components.js',
-    'styles-bundle': './public/style.scss',
+    'components-bundle': './client/components.js',
+    'styles-bundle': './client/style.scss',
   },
   mode: 'production',
   output: {
@@ -55,4 +56,11 @@ export default {
       },
     ],
   },
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        { from: "./client/client.js", to: "./client-bundle.js" },
+      ],
+    }),
+  ],
 };
